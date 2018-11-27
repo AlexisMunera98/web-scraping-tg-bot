@@ -11,14 +11,15 @@ def start(bot, update):
 def echo(bot, update):
     update.effective_message.reply_text(update.effective_message.text)
 
+
 def error(bot, update, error):
     logger.warning('Update "%s" caused error "%s"', update, error)
 
 
 if __name__ == "__main__":
     # Set these variable to the appropriate values
-    TOKEN = "Your token from @Botfather"
-    NAME = "The name of your app on Heroku"
+    TOKEN = "747824031:AAEON4Di-_ScFNU6D4u9rkA3JZwICkbVevE"
+    NAME = "chaqueta-linda"
 
     # Port is given by Heroku
     PORT = os.environ.get('PORT')
