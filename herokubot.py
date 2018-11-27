@@ -1,15 +1,29 @@
 import logging
 import os
-
+from requests_html import HTMLSession
+from requests import post
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 
 def start(bot, update):
-    update.effective_message.reply_text("Hi!")
+    update.effective_message.reply_text("Bienvenida al robosito hecho para Daniela la mas lindi de todas!\n"
+                                        "Soy util para que sepas el precio de tu chaqueta lindi.")
 
 
 def echo(bot, update):
-    update.effective_message.reply_text(update.effective_message.text)
+    session = HTMLSession()
+    page = session.get('https://www.brahma.co/es/productos/chq0035-chaqueta')
+    if page.status_code == 200:
+        discounted_price = page.html.find('.discounted', first=True).text
+        original_price = page.html.find('.original', first=True).text
+        discount = page.html.find('.price-discount-percent', first=True).text
+        print(discounted_price, original_price, discount)
+        if '10' in discount:
+            msg = 'Todavía tiene el 10% 😢\nTe amo ❤'
+        else:
+            msg = 'Ya cambió el descuento. :D'
+    update.effective_message.reply_text('Bebé la chaqueta está en {con_descuento}.\n{msg}'.format(con_descuento=discounted_price,
+                                                                                 msg=msg))
 
 
 def error(bot, update, error):
