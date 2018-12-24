@@ -11,6 +11,7 @@ def start(bot, update):
 
 
 def echo(bot, update):
+    """
     session = HTMLSession()
     page = session.get('https://www.brahma.co/es/productos/chq0035-chaqueta')
     if page.status_code == 200:
@@ -22,8 +23,13 @@ def echo(bot, update):
             msg = 'Todavía tiene el 10% 😢\nTe amo ❤'
         else:
             msg = 'Ya cambió el descuento. :D'
-    update.effective_message.reply_text('Bebé la chaqueta está en {con_descuento}.\n{msg}'.format(con_descuento=discounted_price,
-                                                                                 msg=msg))
+    """
+    message = update.effective_message.text
+    if 'AILOVIU' in str(message).upper():
+        msg = 'Haz descifrado la clave:\n https://lmldt.ga/'
+    else:
+        msg = 'Si la carta deseas conocer el nombre clave deberás saber.'
+    update.effective_message.reply_text('{msg}'.format(msg=msg))
 
 
 def error(bot, update, error):
