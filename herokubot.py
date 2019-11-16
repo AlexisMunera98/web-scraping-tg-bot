@@ -33,6 +33,8 @@ def list_products(update, context):
     for id, product in dict_products.items():
         list_response += '{id}. Nombre: {nombre}\n' \
                          'Precio: {precio}\n\n'.format(id=id, **product)
+    logger.info("LLegue al envio del mensaje")
+    logger.info(update.effective_chat.id)
     context.bot.send_message(chat_id=update.effective_chat.id, text=list_response)
 
 
