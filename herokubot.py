@@ -34,8 +34,9 @@ def list_products(update, context):
         list_response += '{id}. Nombre: {nombre}\n' \
                          'Precio: {precio}\n\n'.format(id=id, **product)
     logger.info("LLegue al envio del mensaje")
-    logger.info(update.effective_chat.id)
-    context.bot.send_message(chat_id=update.effective_chat.id, text=list_response)
+    # logger.info(update.effective_chat.id)
+    update.effective_message.reply_text(list_response)
+    # context.bot.send_message(chat_id=update.effective_chat.id, text=list_response)
 
 
 def echo(bot, update):
@@ -82,8 +83,8 @@ if __name__ == "__main__":
     dp = updater.dispatcher
     # Add handlers
     dp.add_handler(CommandHandler('start', start))
-    dp.add_handler(MessageHandler(Filters.text, echo))
     dp.add_handler(CommandHandler('lista', list_products))
+    dp.add_handler(MessageHandler(Filters.text, echo))
     dp.add_error_handler(error)
 
     # Start the webhook
