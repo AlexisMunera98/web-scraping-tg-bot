@@ -6,8 +6,12 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 
 def start(bot, update):
-    update.effective_message.reply_text("Bienvenida al robosito hecho para Daniela la mas lindi de todas!\n"
-                                        "Soy util para que sepas el precio de tu chaqueta lindi.")
+    update.effective_message.reply_text("Bienvenido al robot de la tienda Brahma!\n"
+                                        "Soy util para que sepas los informacion sobre la web.\n\n"
+                                        "Mis comandos disponibles son:\n"
+                                        "/lista - Lista los precios de la web"
+                                        "/foto id - Muestra la foto del id seleccionado"
+                                        "/promedio - Muestra el precio promedio de los productos")
 
 
 def echo(bot, update):
