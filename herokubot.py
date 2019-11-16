@@ -16,7 +16,7 @@ def start(bot, update):
                                         "/promedio - Muestra el precio promedio de los productos\n")
 
 
-def list_products(update, context):
+def list_products(bot, update):
     session = HTMLSession()
     if len(dict_products) != 30:
         page = session.get('https://www.brahma.co/es/tienda/hombre')
@@ -35,7 +35,7 @@ def list_products(update, context):
                          'Precio: {precio}\n\n'.format(id=id, **product)
     logger.info("LLegue al envio del mensaje")
     # logger.info(update.effective_chat.id)
-    update.message.reply_text(list_response)
+    bot.send_message(chat_id=update.message.chat_id, text=list_response)
 
 
 def echo(bot, update):
