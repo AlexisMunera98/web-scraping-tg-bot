@@ -64,7 +64,7 @@ def average(bot, update):
         total_value += int(price)
     average_price = total_value / len(dict_products)
     bot.send_message(chat_id=update.message.chat_id,
-                     text="El precio promedio de los productos es: {}".format(average_price))
+                     text="El precio promedio de los productos es: ${} COP".format(int(average_price)))
 
 
 def echo(bot, update):
