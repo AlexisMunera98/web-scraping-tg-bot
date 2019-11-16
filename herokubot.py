@@ -61,7 +61,7 @@ def average(bot, update):
     build_dict_products()
     for product in dict_products.values():
         price = product.get('precio').replace('$', '').replace('.', '').replace(' ', '').replace('COP', '')
-        total_value += price
+        total_value += int(price)
     average_price = total_value / len(dict_products)
     bot.send_message(chat_id=update.message.chat_id,
                      text="El precio promedio de los productos es: {}".format(average_price))
