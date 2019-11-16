@@ -24,7 +24,7 @@ def list_products(bot, update):
             all_items = page.html.find('a.product')
             for id, item in enumerate(all_items):
                 key = id + 1
-                dict_products[key] = {
+                dict_products[str(key)] = {
                     'nombre': item.find('.name', first=True).text,
                     'precio': item.find('.price', first=True).text,
                     'img_url': 'https://www.brahma.co{imagen}'.format(
@@ -42,8 +42,17 @@ def list_products(bot, update):
 def photo(bot, update, args):
     logger.info(args)
     logger.info(dir(update))
+    if len(args) == 0:
+        bot.send_message(chat_id=update.message.chat_id, text="Debes enviar el id de un producto de la lista :(")
+        return
     id_product = args[0]
-    bot.send_photo(chat_id=update.message.chat_id, photo=dict_products[id_product])
+    product = dict_products.get(id_product)
+    if not product:
+        bot.send_message(chat_id=update.message.chat_id, text="El ID enviado no es valido :(")
+        return
+    url_photo = product.get('img_url')
+    if url_photo:
+        bot.send_photo(chat_id=update.message.chat_id, photo=url_photo)
 
 
 def echo(bot, update):
