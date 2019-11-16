@@ -23,7 +23,8 @@ def list_products(bot, update):
         if page.status_code == 200:
             all_items = page.html.find('a.product')
             for id, item in enumerate(all_items):
-                dict_products[id] = {
+                key = id + 1
+                dict_products[key] = {
                     'nombre': item.find('.name', first=True).text,
                     'precio': item.find('.price', first=True).text,
                     'img_url': 'https://www.brahma.co{imagen}'.format(
@@ -36,6 +37,13 @@ def list_products(bot, update):
     logger.info("LLegue al envio del mensaje")
     # logger.info(update.effective_chat.id)
     bot.send_message(chat_id=update.message.chat_id, text=list_response)
+
+
+def photo(bot, update, args):
+    logger.info(args)
+    logger.info(dir(update))
+    id_product = args[0]
+    bot.send_photo(chat_id=update.message.chat_id, photo=dict_products[id_product])
 
 
 def echo(bot, update):
@@ -83,6 +91,7 @@ if __name__ == "__main__":
     # Add handlers
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('lista', list_products))
+    dp.add_handler(CommandHandler('foto', photo, pass_args=True))
     dp.add_handler(MessageHandler(Filters.text, echo))
     dp.add_error_handler(error)
 
