@@ -16,9 +16,9 @@ def start(bot, update):
                                         "/promedio - Muestra el precio promedio de los productos\n")
 
 
-def list_products(bot, update):
-    session = HTMLSession()
+def build_dict_products():
     if len(dict_products) != 30:
+        session = HTMLSession()
         page = session.get('https://www.brahma.co/es/tienda/hombre')
         if page.status_code == 200:
             all_items = page.html.find('a.product')
@@ -30,6 +30,10 @@ def list_products(bot, update):
                     'img_url': 'https://www.brahma.co{imagen}'.format(
                         imagen=item.find('img', first=True).attrs.get('src'))
                 }
+
+
+def list_products(bot, update):
+    build_dict_products()
     list_response = ''
     for id, product in dict_products.items():
         list_response += '{id}. Nombre: {nombre}\n' \
@@ -54,6 +58,7 @@ def photo(bot, update, args):
 
 def average(bot, update):
     total_value = 0
+    build_dict_products()
     for product in dict_products.values():
         price = product.get('precio').replace('$', '').replace('.', '').replace(' ', '').replace('COP', '')
         total_value += price
