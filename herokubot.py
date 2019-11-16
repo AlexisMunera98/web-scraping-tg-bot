@@ -35,13 +35,10 @@ def list_products(bot, update):
         list_response += '{id}. Nombre: {nombre}\n' \
                          'Precio: {precio}\n\n'.format(id=id, **product)
     logger.info("LLegue al envio del mensaje")
-    # logger.info(update.effective_chat.id)
     bot.send_message(chat_id=update.message.chat_id, text=list_response)
 
 
 def photo(bot, update, args):
-    logger.info(args)
-    logger.info(dir(update))
     if len(args) == 0:
         bot.send_message(chat_id=update.message.chat_id, text="Debes enviar el id de un producto de la lista :(")
         return
@@ -55,26 +52,18 @@ def photo(bot, update, args):
         bot.send_photo(chat_id=update.message.chat_id, photo=url_photo)
 
 
+def average(bot, update):
+    total_value = 0
+    for product in dict_products.values():
+        price = product.get('precio').replace('$', '').replace('.', '').replace(' ', '').replace('COP', '')
+        total_value += price
+    average_price = total_value / len(dict_products)
+    bot.send_message(chat_id=update.message.chat_id,
+                     text="El precio promedio de los productos es: {}".format(average_price))
+
+
 def echo(bot, update):
-    """
-    session = HTMLSession()
-    page = session.get('https://www.brahma.co/es/productos/chq0035-chaqueta')
-    if page.status_code == 200:
-        discounted_price = page.html.find('.discounted', first=True).text
-        original_price = page.html.find('.original', first=True).text
-        discount = page.html.find('.price-discount-percent', first=True).text
-        print(discounted_price, original_price, discount)
-        if '10' in discount:
-            msg = 'Todavía tiene el 10% 😢\nTe amo ❤'
-        else:
-            msg = 'Ya cambió el descuento. :D'
-    """
-    message = update.effective_message.text
-    if 'AILOVIU' in str(message).upper():
-        msg = 'Haz descifrado la clave:\n https://lmldt.ga/'
-    else:
-        msg = 'Si la carta deseas conocer el nombre clave deberás saber.'
-    update.effective_message.reply_text('{msg}'.format(msg=msg))
+    update.effective_message.reply_text('Envia un comando valido')
 
 
 def error(bot, update, error):
@@ -100,6 +89,7 @@ if __name__ == "__main__":
     # Add handlers
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('lista', list_products))
+    dp.add_handler(CommandHandler('promedio', average))
     dp.add_handler(CommandHandler('foto', photo, pass_args=True))
     dp.add_handler(MessageHandler(Filters.text, echo))
     dp.add_error_handler(error)
